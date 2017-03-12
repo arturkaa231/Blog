@@ -1,0 +1,19 @@
+<!---  подключаем приложение для работы с статическими файлами--->
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Django</title>
+    <!-- Подключаем css--->
+    <link rel="stylesheet" type="text/css" href="{% static "static/css/foundation.css "%}">
+</head>
+<body>
+<h1><a href="r'^'"> My blog</a></h1>
+<!-- сдвиг содержмого на середину с помощью foundation--->
+<div class="row">
+{% block article %}
+{% endblock %}
+</div>
+</body>
+</html>

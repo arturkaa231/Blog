@@ -1,0 +1,17 @@
+
+{% extends 'main.html' %}
+{% load staticfiles %}
+
+{% block article %}
+    <!-- ограничение ширины колонок(экран поделен на 12 частей)--->
+    <div class="large-6 columns">
+{% for article in articles %}
+    <h6>The date of publication:  {{ article.article_date }}</h6>
+    <h4><a href="/article/get/{{ article.id }}">{{ article.article_title }}</a></h4>
+    <p>{{ article.article_text }}</p>
+    <!---добавление статичекого изображения лайка--->
+    <p><img src="{% static "like.png "%}" width="25px" height="25px"> {{ article.article_likes }}
+    <hr>
+{% endfor %}
+    </div>
+{% endblock %}
