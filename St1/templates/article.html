@@ -11,5 +11,11 @@
 {% for comment in comments %}
    <h4> {{ comment.comments_text }}</h4>
 {% endfor %}
+    <form action="{%  url 'addcomment' article.id %} " method ="post">
+    {%  csrf_token %}
+    {{ form }}
+    <input type="submit" class="button" value="Добавить комментарий">
+
+    </form>
 </div>
 {% endblock %}
