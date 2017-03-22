@@ -1949,8 +1949,7 @@ select {
     color: #cc4b37; }
   .is-invalid-input:not(:focus):-ms-input-placeholder {
     color: #cc4b37; }
-  .is-invalid-input:not(:focus)::placeholder {
-    color: #cc4b37; }
+
 
 .is-invalid-label {
   color: #cc4b37; }

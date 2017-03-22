@@ -9,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from St1.forms import CommentForm
 from django.template.context_processors import csrf
 from django.core.urlresolvers import reverse
+from django.contrib import auth
 
 # Create your views here.
 def basic_one(request):
@@ -29,20 +30,26 @@ def template_three_simple(request):
     return render_to_response('myview.html', {'name': view})
 
 
-# Вывод всех сатей
+# Вывод всех сатей. В переменную user помещаем имя авторизированного пользователя, полученного из реквеста
 def articles(request):
-    return render_to_response('articles.html', {'articles': Article.objects.all()})
+    return render_to_response('articles.html', {'articles': Article.objects.all(),'username':auth.get_user(request).username})
 
 
 # Вывод конкретной статьи с коментариями
 def article(request, article_id=1):
-    comment_form = CommentForm
+
     args = {}
-    args.update(csrf(request))
     args['article'] = Article.objects.get(id=article_id)
     args['comments'] = Comments.objects.filter(comments_article_id=article_id)
-    args['form'] = comment_form
-    return render_to_response('article.html', args)
+    if request.user.is_authenticated():
+        comment_form = CommentForm
+        args.update(csrf(request))
+        args['form'] = comment_form
+        return render_to_response('article.html', args)
+
+    else:
+        args['Error'] = 'To post a comment you have to login'
+        return render_to_response('article.html', args)
 
 
 # Добавление лайка. Если пользователь введет айди несуществующего объекта класса Article, генерируется исключение и ошибка 404
@@ -74,7 +81,7 @@ def addcomment(request, article_id):
             form.save()
             #добавление сессии. если "pause" есть в request.session, происходит сразу перенаправление
             #Сессия действует 60 секунд. По истичении 60 секунд снова можно будет добавлять комментарии
-            request.session.set_expiry(60)
-            request.session['pause']=True
+            #request.session.set_expiry(60)
+            #request.session['pause']=True
 
     return redirect(reverse('get',args= article_id))

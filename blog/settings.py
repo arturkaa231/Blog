@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'St1',
+    'loginsys',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +56,9 @@ ROOT_URLCONF = 'blog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'),'Users/Artur/PycharmProjects/blog/St1/templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),
+                 'Users/Artur/PycharmProjects/blog/St1/templates',
+                 'Users/Artur/PycharmProjects/blog/loginsys/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

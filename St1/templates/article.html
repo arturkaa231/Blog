@@ -1,5 +1,5 @@
 {% extends 'main.html' %}
-{% load staticfiles %}
+
 
 {% block article %}
 <h4>{{ article.aricle_date }}</h4>
@@ -11,11 +11,14 @@
 {% for comment in comments %}
    <h4> {{ comment.comments_text }}</h4>
 {% endfor %}
+{% if Error %}
+    <label class="errornote">{{ Error }}</label>
+{% else %}
     <form action="{%  url 'addcomment' article.id %} " method ="post">
     {%  csrf_token %}
     {{ form }}
     <input type="submit" class="button" value="Добавить комментарий">
-
     </form>
+{% endif %}
 </div>
 {% endblock %}
