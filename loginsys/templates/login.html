@@ -11,7 +11,8 @@
             {% if login_error %}
                 <label class="errors">{{ login_error }}</label>
             {% endif %}
-            <input class="button" type="submit" value="Войти">
+            <input class="button" type="submit" value="Enter">
+            <div class="label round secondary"><a href="{% url 'register' %}">Register</a> </div>
         </form>
     </div>
 

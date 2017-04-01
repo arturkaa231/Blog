@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="top-bar">
-    <section class="top-bar-section">
+    <section class="top-bar-section" >
         <ul class="float-right">
             {%  if username %}
                 <li><a href="{% url "logout" %}">Exit({{ username }})</a> </li>
@@ -22,7 +22,7 @@
 </div>
 <h1><a href="r'^'"> MY BLOG</a></h1>
 <!-- сдвиг содержмого на середину с помощью foundation--->
-<div class="row">
+<div class="row" >
 {% block article %}{% endblock %}
 {% block login %}{% endblock %}
 </div>

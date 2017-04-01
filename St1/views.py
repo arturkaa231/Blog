@@ -10,7 +10,7 @@ from St1.forms import CommentForm
 from django.template.context_processors import csrf
 from django.core.urlresolvers import reverse
 from django.contrib import auth
-
+from django.core.paginator import Paginator
 # Create your views here.
 def basic_one(request):
     view = 'basic_one'
@@ -31,8 +31,11 @@ def template_three_simple(request):
 
 
 # Вывод всех сатей. В переменную user помещаем имя авторизированного пользователя, полученного из реквеста
-def articles(request):
-    return render_to_response('articles.html', {'articles': Article.objects.all(),'username':auth.get_user(request).username})
+def articles(request, page_number=1):
+    #Добавление пагинации
+    all_articles=Article.objects.all()
+    current_page=Paginator(all_articles,2)
+    return render_to_response('articles.html', {'articles': current_page.page(page_number),'username':auth.get_user(request).username})
 
 
 # Вывод конкретной статьи с коментариями
