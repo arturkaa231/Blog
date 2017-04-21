@@ -12,23 +12,6 @@ from django.core.urlresolvers import reverse
 from django.contrib import auth
 from django.core.paginator import Paginator
 # Create your views here.
-def basic_one(request):
-    view = 'basic_one'
-    html = "<html><body>This is %s view</body></html>" % view
-    return HttpResponse(html)
-
-
-def template_two(request):
-    view = 'template_two'
-    t = get_template('myview.html')
-    html = t.render(Context({'name': view}))
-    return HttpResponse(html)
-
-
-def template_three_simple(request):
-    view = 'template three'
-    return render_to_response('myview.html', {'name': view})
-
 
 # Вывод всех сатей. В переменную user помещаем имя авторизированного пользователя, полученного из реквеста
 def articles(request, page_number=1):
@@ -39,11 +22,13 @@ def articles(request, page_number=1):
 
 
 # Вывод конкретной статьи с коментариями
-def article(request, article_id=1):
+def article(request, article_id=1, page_number=1):
 
     args = {}
     args['article'] = Article.objects.get(id=article_id)
-    args['comments'] = Comments.objects.filter(comments_article_id=article_id)
+    com = Comments.objects.filter(comments_article_id=article_id)
+    current_page=Paginator(com,2)
+    args['comments']=current_page.page(page_number)
     if request.user.is_authenticated():
         comment_form = CommentForm
         args.update(csrf(request))
@@ -56,26 +41,26 @@ def article(request, article_id=1):
 
 
 # Добавление лайка. Если пользователь введет айди несуществующего объекта класса Article, генерируется исключение и ошибка 404
-def addlike(request, article_id):
+def addlike(request, article_id, page_num):
     try:
- # Работа с кукифайлами(не рабочий вариант, только для обучения), учли куки с ключем article_id есть в COOKIES,
+ # Работа с кукифайлами(не рабочий вариант, только для обучения), если куки с ключем article_id есть в COOKIES,
  # обновляем страницу,если нет-увеличиваем количество лайков
         if article_id in request.COOKIES:
-            redirect('/')
+            redirect(reverse('page',args=page_num))
         else:
             article = Article.objects.get(id=article_id)
             article.article_likes += 1
             article.save()
 #Работа с кукифайлами(не рабочий вариант, только для обучения)
-            response=redirect('/')
+            response=redirect(reverse('page',args=page_num))
             response.set_cookie(article_id, "test")
             return response
     except ObjectDoesNotExist:
         raise Http404
-    return redirect('/')
+    return redirect(reverse('page',args=page_num))
 
 #добавление комментариев к статье
-def addcomment(request, article_id):
+def addcomment(request, article_id, page_number):
     if request.method == "POST" and ("pause" not in request.session):
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -87,4 +72,4 @@ def addcomment(request, article_id):
             #request.session.set_expiry(60)
             #request.session['pause']=True
 
-    return redirect(reverse('get',args= article_id))
+    return redirect(reverse('get',args= [article_id,page_number]))

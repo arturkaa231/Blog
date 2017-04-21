@@ -7,10 +7,10 @@
     <div class="large-6 columns">
         {% for article in articles %}
             <h6>The date of publication:  {{ article.article_date }}</h6>
-            <h4><a href="{%  url 'get' article.id %}">{{ article.article_title }}</a></h4>
+            <h4><a href="{%  url 'get' article.id 1 %}">{{ article.article_title }}</a></h4>
             <p>{{ article.article_text }}</p>
             <!---добавление статичекого изображения лайка--->
-            <p><a href="{%  url 'addlike' article.id %} "><img src="{% static "like.png "%}" width="25px" height="25px"> {{ article.article_likes }}</a></p>
+            <p><a href="/articles/addlike/{{article.id }}/{{ articles.number}}/ "><img src="{% static "like.png "%}" width="25px" height="25px"> {{ article.article_likes }}</a></p>
             <hr>
         {% endfor %}
     </div>
