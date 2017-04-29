@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.core.urlresolvers import reverse
 # Create your models here.
 class Article(models.Model):
     class Meta():
@@ -8,6 +8,7 @@ class Article(models.Model):
     article_text=models.TextField()
     article_date=models.DateTimeField()
     article_likes=models.IntegerField(default=0)
+
 
 class Comments(models.Model):
     class Meta():

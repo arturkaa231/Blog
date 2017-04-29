@@ -22,9 +22,21 @@
 </div>
 <h1><a href="r'^'"> MY BLOG</a></h1>
 <!-- сдвиг содержмого на середину с помощью foundation--->
-<div class="row" >
-{% block article %}{% endblock %}
-{% block login %}{% endblock %}
-</div>
+
+    <div class="column small-9">
+        {% block article %}{% endblock %}
+        {% block login %}{% endblock %}
+        {% block addarticle %}{% endblock %}
+    </div>
+
+    <div class="column small-2">
+    <p>Сегодняшние статьи:</p>
+{% for i in TodayArticles %}
+    <a href="{%  url 'get' i.id 1 %}">{{ i.article_title }}</a><br>
+{% endfor %}
+    </div>
+
+
+
 </body>
 </html>

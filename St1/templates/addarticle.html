@@ -1,0 +1,10 @@
+{% extends 'main.html' %}
+{% load staticfiles %}
+
+{% block addarticle %}
+    <h3>Add your  article</h3>
+    <form action="{% url 'addarticle' %}" method="post">
+    {%  csrf_token %}
+    {{ form }}
+    </form>
+{% endblock %}
