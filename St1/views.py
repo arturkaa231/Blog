@@ -6,24 +6,30 @@ from django.template import Context
 from django.shortcuts import render_to_response, redirect
 from St1.models import Article, Comments
 from django.core.exceptions import ObjectDoesNotExist
-from St1.forms import CommentForm
+from St1.forms import CommentForm, Addarticle
 from django.template.context_processors import csrf
 from django.core.urlresolvers import reverse
 from django.contrib import auth
 from django.core.paginator import Paginator
+from datetime import datetime,date
+import pytz
 # Create your views here.
 
 # Вывод всех сатей. В переменную user помещаем имя авторизированного пользователя, полученного из реквеста
 def articles(request, page_number=1):
-    #Добавление пагинации
+    args={}
+    #Добавление ссылок на сегодняшние сайты
+    date=Article.objects.filter(article_date__day=datetime.today().day)
+    args['TodayArticles']=date[:3]
+    # Добавление пагинации
     all_articles=Article.objects.all()
-    current_page=Paginator(all_articles,2)
-    return render_to_response('articles.html', {'articles': current_page.page(page_number),'username':auth.get_user(request).username})
+    args['articles']=Paginator(all_articles,2).page(page_number)
+    args['username']=auth.get_user(request).username
+    return render_to_response('articles.html', args)
 
 
 # Вывод конкретной статьи с коментариями
 def article(request, article_id=1, page_number=1):
-
     args = {}
     args['article'] = Article.objects.get(id=article_id)
     com = Comments.objects.filter(comments_article_id=article_id)
@@ -39,7 +45,11 @@ def article(request, article_id=1, page_number=1):
         args['Error'] = 'To post a comment you have to login'
         return render_to_response('article.html', args)
 
-
+def addarticle(request):
+    args={}
+    args.update(csrf(request))
+    args['form']=Addarticle
+    return render_to_response('addarticle.html',args)
 # Добавление лайка. Если пользователь введет айди несуществующего объекта класса Article, генерируется исключение и ошибка 404
 def addlike(request, article_id, page_num):
     try:

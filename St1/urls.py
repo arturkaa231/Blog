@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^articles/addlike/(?P<article_id>\d+)/(?P<page_num>\d+)/$', views.addlike,name='addlike'),  # урл для добавления лайка
     url(r'^articles/addcomment/(?P<article_id>\d+)/(?P<page_number>\d+)/$', views.addcomment,name ='addcomment'),
     url(r'^page/(?P<page_number>\d+)/$', views.articles, name='page'),
+    url(r'^addarticle/$',views.addarticle, name='addarticle'),
     url(r'^',views.articles),
 
 

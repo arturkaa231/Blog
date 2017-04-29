@@ -3,8 +3,11 @@
 {% load staticfiles %}
 
 {% block article %}
+
     <!-- ограничение ширины колонок(экран поделен на 12 частей)--->
     <div class="large-6 columns">
+    <h3><a href="{%  url 'addarticle'%}">Add your article</a></h3>
+        <hr>
         {% for article in articles %}
             <h6>The date of publication:  {{ article.article_date }}</h6>
             <h4><a href="{%  url 'get' article.id 1 %}">{{ article.article_title }}</a></h4>
